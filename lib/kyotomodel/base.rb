@@ -16,7 +16,7 @@ module KyotoModel
       end
       
       def namespace
-        @namespace ||= self.name
+        @namespace ||= "KyotoModel::#{self.name}"
       end
       
       def namespace=(namespace)
@@ -79,6 +79,7 @@ module KyotoModel
           attributes.collect { |attr| create(attr, options, &block) }
         else
           object = new(attributes, options)
+          object.id = self.class.db.increment("#{namespace}::next_id")
           yield(object) if block_given?
           object.save
           object
