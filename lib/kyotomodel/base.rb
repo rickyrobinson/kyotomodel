@@ -124,7 +124,7 @@ module KyotoModel
     end
     
     def save
-      self.id = self.class.db.increment("#{namespace}::next_id") if @new_record
+      self.id = self.class.db.increment("#{self.class.namespace}::next_id") if @new_record
       self.class.db.set(kyoto_key, serializable_hash)
     end
     
