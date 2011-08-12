@@ -15,16 +15,16 @@ module KyotoModel
         KyotoModel.databases[db_name || :default]
       end
       
-      def namespace
+      def km_namespace
         @namespace ||= "KyotoModel::#{self.name}"
       end
       
-      def namespace=(namespace)
-        @namespace = namespace
+      def km_namespace=(namespace)
+        @km_namespace = namespace
       end
       
       def kyoto_key(id)
-        "#{namespace}::#{id}"
+        "#{km_namespace}::#{id}"
       end
       
       def find(*ids)
@@ -56,11 +56,11 @@ module KyotoModel
       end
       
       def count
-        db.match_prefix("#{namespace}::").length
+        db.match_prefix("#{km_namespace}::").length
       end
       
       def all
-        bulk_request(db.match_prefix("#{namespace}::")).
+        bulk_request(db.match_prefix("#{km_namespace}::")).
         map do |k,v|
           existing(v)
         end
@@ -124,7 +124,7 @@ module KyotoModel
     end
     
     def save
-      self.id = self.class.db.increment("#{self.class.namespace}::next_id") if @new_record
+      self.id = self.class.db.increment("#{self.class.km_namespace}::next_id") if @new_record
       self.class.db.set(kyoto_key, serializable_hash)
     end
     
