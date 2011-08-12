@@ -79,7 +79,6 @@ module KyotoModel
           attributes.collect { |attr| create(attr, options, &block) }
         else
           object = new(attributes, options)
-          object.id = self.class.db.increment("#{namespace}::next_id")
           yield(object) if block_given?
           object.save
           object
@@ -125,6 +124,7 @@ module KyotoModel
     end
     
     def save
+      self.id = self.class.db.increment("#{namespace}::next_id") if @new_record
       self.class.db.set(kyoto_key, serializable_hash)
     end
     
