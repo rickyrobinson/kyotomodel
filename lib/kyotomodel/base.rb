@@ -114,7 +114,8 @@ module KyotoModel
         end
     end
     
-    def initialize(attributes = {})
+    def initialize(attributes = {}, options = {})
+      # We don't currently use options.
       @new_record = true
       @attributes = {}.with_indifferent_access
       @attributes.merge!(known_attributes.inject({}) {|h, n| h[n] = nil; h })
